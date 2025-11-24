@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Asignaturas</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 4px;
+        }
+
+        .btn-primary { background-color: #470350; color: #fff; }
+        .btn-danger { background-color: #dc3545; color: #fff; }
+        .btn-secondary { background-color: #6c757d; color: #fff; }
+
+        .btn-primary:hover { background-color: #0069d9; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-secondary:hover { background-color: #5a6268; }
+
+        ul { list-style: none; padding: 0; }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Asignaturas</h1>
+
+        <div class="top-actions">
+            <a href="{{ url_for('add_asignatura') }}" class="btn btn-primary"> Agregar Asignatura</a>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary"> Volver a Alumnos</a>
+        </div>
+
+        <ul>
+            {% for a in asignaturas %}
+                <li>
+                    {{ a.nombre }}
+                    <span>
+                        <a href="{{ url_for('update_asignatura', id=a._id) }}" class="btn btn-primary"> Editar</a>
+                        <a href="{{ url_for('delete_asignatura', id=a._id) }}" class="btn btn-danger"> Eliminar</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

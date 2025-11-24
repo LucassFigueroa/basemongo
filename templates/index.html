@@ -3,20 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <title>CRUD Alumnos MongoDB</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            font-size: 18px; 
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nombre-alumno {
+            font-size: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 4px;
+        }
+
+        .btn-primary {
+            background-color: #470350;
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #54007a;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .link-asignaturas {
+            text-align: right;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lista de Alumnos</h1>
+    <div class="container">
+        <h1>Lista de Alumnos</h1>
 
-    <a href="{{ url_for('add_alumno') }}">➕ Agregar Alumno</a>
+        <div class="top-actions">
+            <a href="{{ url_for('add_alumno') }}" class="btn btn-primary"> Agregar Alumno</a>
+            <a href="{{ url_for('listar_asignaturas') }}" class="btn btn-secondary"> Ver Asignaturas</a>
+        </div>
 
-    <ul>
-        {% for a in alumnos %}
-            <li>
-                {{ a.nombre }} {{ a.apellido }}
-                <a href="{{ url_for('update_alumno', id=a._id) }}">✏️ Editar</a>
-                <a href="{{ url_for('delete_alumno', id=a._id) }}">🗑️ Eliminar</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for a in alumnos %}
+                <li>
+                    <span class="nombre-alumno">
+                        {{ a.nombre }} {{ a.apellido }}
+                    </span>
+                    <span>
+                        <a href="{{ url_for('update_alumno', id=a._id) }}" class="btn btn-primary"> Editar</a>
+                        <a href="{{ url_for('delete_alumno', id=a._id) }}" class="btn btn-danger"> Eliminar</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>

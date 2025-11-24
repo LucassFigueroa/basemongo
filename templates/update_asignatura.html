@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar Alumno</title>
+    <title>Editar Asignatura</title>
 
     <style>
         body {
@@ -30,26 +30,20 @@
             font-size: 16px;
             margin-top: 10px;
         }
-        .btn-primary { background: #470350; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-
-        .btn-primary:hover { background: #0069d9; }
-        .btn-secondary:hover { background: #5a6268; }
+        .btn-primary { background: #470350; color: #fff; }
+        .btn-secondary { background: #6c757d; color: #fff; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Agregar Alumno</h1>
+        <h1>Editar Asignatura</h1>
 
         <form method="POST">
             <label>Nombre:</label><br>
-            <input type="text" name="nombre" required style="width:100%; padding:8px;"><br><br>
+            <input type="text" name="nombre" value="{{ asignatura.nombre }}" required style="width:100%; padding:8px;"><br><br>
 
-            <label>Apellido:</label><br>
-            <input type="text" name="apellido" required style="width:100%; padding:8px;"><br><br>
-
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver</a>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="{{ url_for('listar_asignaturas') }}" class="btn btn-secondary">Volver</a>
         </form>
     </div>
 </body>

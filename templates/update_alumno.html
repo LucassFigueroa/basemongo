@@ -3,21 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Alumno</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { text-align: center; }
+        label { font-weight: bold; }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .btn-primary { background: #470350; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+
+        .btn-primary:hover { background: #0069d9; }
+        .btn-secondary:hover { background: #5a6268; }
+    </style>
 </head>
 <body>
-    <h1>Editar Alumno</h1>
+    <div class="container">
+        <h1>Editar Alumno</h1>
 
-    <form method="POST">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value="{{ alumno.nombre }}" required><br><br>
+        <form method="POST">
+            <label>Nombre:</label><br>
+            <input type="text" name="nombre" value="{{ alumno.nombre }}" required style="width:100%; padding:8px;"><br><br>
 
-        <label>Apellido:</label>
-        <input type="text" name="apellido" value="{{ alumno.apellido }}" required><br><br>
+            <label>Apellido:</label><br>
+            <input type="text" name="apellido" value="{{ alumno.apellido }}" required style="width:100%; padding:8px;"><br><br>
 
-        <button type="submit">Actualizar</button>
-    </form>
-
-    <br>
-    <a href="{{ url_for('home') }}">Volver</a>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver</a>
+        </form>
+    </div>
 </body>
 </html>
