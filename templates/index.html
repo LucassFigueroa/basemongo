@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Alumnos MongoDB</title>
+</head>
+<body>
+    <h1>Lista de Alumnos</h1>
+
+    <a href="{{ url_for('add_alumno') }}">➕ Agregar Alumno</a>
+
+    <ul>
+        {% for a in alumnos %}
+            <li>
+                {{ a.nombre }} {{ a.apellido }}
+                <a href="{{ url_for('update_alumno', id=a._id) }}">✏️ Editar</a>
+                <a href="{{ url_for('delete_alumno', id=a._id) }}">🗑️ Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
