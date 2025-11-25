@@ -1,0 +1,105 @@
+use tallerbasededatosLSM;
+
+db.alumnos.drop();
+db.asignaturas.drop();
+db.inscripciones.drop();
+db.notas.drop();
+db.auditoria_notas.drop();
+db.log_errores_proceso.drop();
+db.salida_reporte.drop();
+
+db.createCollection("alumnos");
+db.createCollection("asignaturas");
+db.createCollection("inscripciones");
+db.createCollection("notas");
+db.createCollection("auditoria_notas");
+db.createCollection("log_errores_proceso");
+db.createCollection("salida_reporte");
+
+const resAlumnos = db.alumnos.insertMany([
+  { nombre: "Juan", apellido: "Pérez" },
+  { nombre: "María", apellido: "López" },
+  { nombre: "Carlos", apellido: "Rivas" }
+]);
+
+const alumnosIds = resAlumnos.insertedIds;
+
+const resAsignaturas = db.asignaturas.insertMany([
+  { nombre: "Base de Datos I" },
+  { nombre: "Programación" },
+  { nombre: "Estadística" }
+]);
+
+const asigIds = resAsignaturas.insertedIds;
+
+let inscripcionesDocs = [];
+Object.values(alumnosIds).forEach(alumnoId => {
+  Object.values(asigIds).forEach(asigId => {
+    inscripcionesDocs.push({
+      alumnoId: alumnoId,
+      asignaturaId: asigId,
+      semestre: 1,
+      ano: 2024
+    });
+  });
+});
+
+const resInsc = db.inscripciones.insertMany(inscripcionesDocs);
+const inscIds = Object.values(resInsc.insertedIds);
+
+let notasDocs = [];
+inscIds.forEach(inscId => {
+  notasDocs.push(
+    {
+      inscripcionId: inscId,
+      tipo_nota: "EV1",
+      nota: 5.5,
+      ponderacion: 30,
+      fecha_registro: new Date()
+    },
+    {
+      inscripcionId: inscId,
+      tipo_nota: "EV2",
+      nota: 6.2,
+      ponderacion: 30,
+      fecha_registro: new Date()
+    },
+    {
+      inscripcionId: inscId,
+      tipo_nota: "EV3",
+      nota: 4.8,
+      ponderacion: 40,
+      fecha_registro: new Date()
+    }
+  );
+});
+
+db.notas.insertMany(notasDocs);
+
+const unaNota = db.notas.findOne({});
+const unaInscripcion = db.inscripciones.findOne({});
+
+db.auditoria_notas.insertOne({
+  notaId: unaNota ? unaNota._id : null,
+  inscripcionId: unaInscripcion ? unaInscripcion._id : null,
+  accion: "INSERT",
+  usuario: "demo_usuario",
+  momento: new Date()
+});
+
+db.log_errores_proceso.insertOne({
+  etapa: "carga_inicial",
+  alumnoId: unaInscripcion ? unaInscripcion.alumnoId : null,
+  detalle: "Error simulado",
+  momento: new Date()
+});
+
+db.salida_reporte.insertOne({
+  run_id: 1,
+  etapa: "header",
+  alumnoId: unaInscripcion ? unaInscripcion.alumnoId : null,
+  semestre: 1,
+  ano: 2024,
+  linea: "Reporte generado",
+  momento: new Date()
+});
