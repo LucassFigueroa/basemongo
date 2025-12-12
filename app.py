@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -13,6 +14,8 @@ db = client["tallerbasededatosLSM"]
 # las colecciones para que se vean en el navegador 
 collection_alumnos = db["alumnos"]
 collection_asig = db["asignaturas"]
+collection_notas = db["notas"]
+collection_inscripciones = db["inscripciones"]
 
 
 #CRUD ALUMNOS
@@ -82,6 +85,49 @@ def update_asignatura(id):
 def delete_asignatura(id):
     collection_asig.delete_one({"_id": ObjectId(id)})
     return redirect(url_for("listar_asignaturas"))
+
+# CRUD NOTAS
+@app.route("/notas")
+def listar_notas():
+    notas = list(collection_notas.find())
+    return render_template("notas.html", notas=notas)
+
+@app.route("/notas/add", methods=["GET", "POST"])
+def add_nota():
+    if request.method == "POST":
+        collection_notas.insert_one({
+            "inscripcionId": ObjectId(request.form["inscripcionId"]),
+            "tipo_nota": request.form["tipo_nota"],
+            "nota": float(request.form["nota"]),
+            "ponderacion": int(request.form["ponderacion"]),
+            "fecha_registro": datetime.now()
+        })
+        return redirect(url_for("listar_notas"))
+    
+    inscripciones = list(collection_inscripciones.find())
+    return render_template("add_nota.html", inscripciones=inscripciones)
+
+@app.route("/notas/update/<id>", methods=["GET", "POST"])
+def update_nota(id):
+    nota = collection_notas.find_one({"_id": ObjectId(id)})
+    if request.method == "POST":
+        collection_notas.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "inscripcionId": ObjectId(request.form["inscripcionId"]),
+                "tipo_nota": request.form["tipo_nota"],
+                "nota": float(request.form["nota"]),
+                "ponderacion": int(request.form["ponderacion"])
+            }}
+        )
+        return redirect(url_for("listar_notas"))
+    inscripciones = list(collection_inscripciones.find())
+    return render_template("update_nota.html", nota=nota, inscripciones=inscripciones)
+
+@app.route("/notas/delete/<id>")
+def delete_nota(id):
+    collection_notas.delete_one({"_id": ObjectId(id)})
+    return redirect(url_for("listar_notas"))
 
 if __name__ == "__main__":
     app.run(debug=True)
